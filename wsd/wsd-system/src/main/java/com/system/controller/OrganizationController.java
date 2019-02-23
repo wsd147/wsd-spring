@@ -54,10 +54,7 @@ public class OrganizationController {
     @RequestMapping("/add/{pid}")
     public ModelAndView add(@PathVariable("pid") String pid){
         ModelAndView modelAndView = new ModelAndView(prefix+"/add");
-        Example example = new Example(Organization.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizationId",pid);
-        Organization organization = organizationService.selectOne(example);
+        Organization organization = organizationService.selectByKey(pid);
         if(organization!=null){
             modelAndView.addObject("pId",organization.getOrganizationId());
             modelAndView.addObject("pName",organization.getName());
@@ -66,6 +63,15 @@ public class OrganizationController {
             modelAndView.addObject("pName","总组织");
         }
 
+        return modelAndView;
+    }
+
+
+    @RequestMapping("edit/{organizationId}")
+    public ModelAndView edit(@PathVariable("organizationId") Integer organizationId){
+        ModelAndView modelAndView = new ModelAndView(prefix+"/edit");
+        Organization organization = organizationService.selectByKey(organizationId);
+        modelAndView.addObject("organization",organization);
         return modelAndView;
     }
 

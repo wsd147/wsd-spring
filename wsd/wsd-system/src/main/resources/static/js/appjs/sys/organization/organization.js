@@ -86,7 +86,7 @@ Organ.showAdd = function(pid){
 }
 
 
-Organ.showEdit = function(){
+Organ.showEdit = function(organizationId){
     Alert.ok(123);
 }
 
