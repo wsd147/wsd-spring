@@ -1,5 +1,6 @@
 package com.system.controller;
 
+import com.common.controller.BaseController;
 import com.common.dao.model.LayuiTableResult;
 import com.common.tips.ErrorTip;
 import com.common.tips.SuccessTip;
@@ -23,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/sys/organization")
-public class OrganizationController {
+public class OrganizationController extends BaseController{
 
     private static  final Logger LOGGER = LoggerFactory.getLogger(OrganizationController.class);
 
@@ -42,71 +43,132 @@ public class OrganizationController {
     public List<Organization> list() {
         try {
             Example example = new Example(Organization.class);
-            example.setOrderByClause("orderNum desc");
+            example.setOrderByClause("orderNum asc");
             List<Organization> users = organizationService.selectAll();
             return users;
         } catch (Exception e) {
-            LOGGER.error("部门列表加载失败:+" + e.getMessage());
+            LOGGER.error("组织列表加载失败:+" + e.getMessage());
             return  null;
         }
     }
 
     @RequestMapping("/add/{pid}")
     public ModelAndView add(@PathVariable("pid") String pid){
-        ModelAndView modelAndView = new ModelAndView(prefix+"/add");
-        Organization organization = organizationService.selectByKey(pid);
-        if(organization!=null){
-            modelAndView.addObject("pId",organization.getOrganizationId());
-            modelAndView.addObject("pName",organization.getName());
-        }else{
-            modelAndView.addObject("pId",0);
-            modelAndView.addObject("pName","总组织");
+        try{
+            ModelAndView modelAndView = new ModelAndView(prefix+"/add");
+            Organization organization = organizationService.selectByKey(pid);
+            if(organization!=null){
+                modelAndView.addObject("pId",organization.getId());
+                modelAndView.addObject("pName",organization.getName());
+            }else{
+                modelAndView.addObject("pId",0);
+                modelAndView.addObject("pName","总组织");
+            }
+            return modelAndView;
+        }catch (Exception e){
+            LOGGER.error("打开组织添加页面失败："+e.getMessage());
+            e.printStackTrace();
+            return null;
         }
-
-        return modelAndView;
     }
 
 
-    @RequestMapping("edit/{organizationId}")
-    public ModelAndView edit(@PathVariable("organizationId") Integer organizationId){
-        ModelAndView modelAndView = new ModelAndView(prefix+"/edit");
-        Organization organization = organizationService.selectByKey(organizationId);
-        modelAndView.addObject("organization",organization);
-        return modelAndView;
+    @RequestMapping("edit/{id}")
+    public ModelAndView edit(@PathVariable("id") Integer id){
+        try{
+            ModelAndView modelAndView = new ModelAndView(prefix+"/edit");
+            Organization organization = organizationService.selectByKey(id);
+            Organization Parentorganization = organizationService.selectByKey(organization.getPid());
+            if(Parentorganization==null){
+                modelAndView.addObject("parentName","总组织");
+            }else{
+                modelAndView.addObject("parentName",organizationService.selectByKey(organization.getPid()).getName());
+            }
+            modelAndView.addObject("organization",organization);
+            return modelAndView;
+        }catch (Exception e){
+            e.printStackTrace();
+            LOGGER.error("打开组织修改页面失败："+e.getMessage());
+            return null;
+        }
     }
 
     @PostMapping("/save")
     @ResponseBody
     public Tip save(Organization organization){
-        if(organization.getOrganizationId()==null){
-            Example example = new Example(Organization.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("name", organization.getName());
-            if(organizationService.selectByExample(example).size()>0){
-                return new ErrorTip(500,"该部门已经存在");
+        try{
+            if(organization.getId()==null){
+                Example example = new Example(Organization.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("organizationId",organization.getOrganizationId());
+                if(organizationService.selectByExample(example).size()>0){
+                    return new ErrorTip(500,"该部门已经存在");
+                }else{
+                    try{
+                        organization.setCtime(new Date());
+                        organization.setDelFlag(1);
+                        organizationService.insert(organization);
+                        return  new SuccessTip();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return new ErrorTip(500,"添加失败");
+                    }
+                }
             }else{
-                try{
-                    organization.setCtime(new Date());
-                    organization.setDelFlag(1);
-                    organizationService.insert(organization);
-                    return  new SuccessTip();
-                }catch (Exception e){
-                    e.printStackTrace();
-                    return new ErrorTip(500,"添加失败");
+                if(organizationService.selectByKey(organization.getId())==null){
+                    return new ErrorTip(500,"此部门不存在，请刷新");
+                }else {
+                    try{
+                        organization.setUtime(new Date());
+                        organizationService.updateByKeySelective(organization);
+                        return  new SuccessTip();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return new ErrorTip(500,"修改失败失败");
+                    }
                 }
             }
-        }else{
-            if(organizationService.selectByKey(organization.getOrganizationId())==null){
-                return new ErrorTip(500,"此部门不存在，请刷新");
-            }else {
-                try{
-                    organizationService.updateByKeySelective(organization);
+        }catch (Exception e){
+            LOGGER.error("组织保存失败："+e.getMessage());
+            return new ErrorTip(500,"程序异常");
+        }
+    }
+
+    @DeleteMapping("/remove/{id}")
+    @ResponseBody
+    public Tip remove(@PathVariable("id")Integer id){
+        try{
+            Organization organization = organizationService.selectByKey(id);
+            if(organization==null){
+                return  new ErrorTip(500,"删除失败！该组织不存在");
+            }else{
+                Example example = new Example(Organization.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("pid",organization.getId());
+                List<Organization> organizations = organizationService.selectByExample(example);
+                if(organizations.size()>0){
+                    return new ErrorTip(500,"删除失败！该组织下包含其他组织");
+                }else{
+                    organizationService.deleteByKey(id);
                     return  new SuccessTip();
-                }catch (Exception e){
-                    e.printStackTrace();
-                    return new ErrorTip(500,"修改失败失败");
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            LOGGER.error("组织删除失败"+e.getMessage());
+            return new ErrorTip(500,"程序异常");
+        }
+    }
+
+    @PutMapping("/enableOrDisable/{type}/{id}")
+    @ResponseBody
+    public Tip enableOrDisable(@PathVariable("type") String type,@PathVariable("id") Integer id){
+        try {
+            return  organizationService.enableOrDisable(id,type);
+        }catch (Exception e){
+            e.printStackTrace();
+            LOGGER.error("组织禁用/启用失败"+e.getMessage());
+            return new ErrorTip(500,"程序异常");
         }
     }
 }

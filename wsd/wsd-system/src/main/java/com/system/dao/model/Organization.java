@@ -16,19 +16,24 @@ import java.util.Date;
 public class Organization implements Serializable {
 
     /**
-     * 编号
-     *
-     * @mbg.generated
+     * id
      */
     @Id
     @KeySql(useGeneratedKeys = true)
+    private Integer id;
+
+    /**
+     * 编号
+     *
+     *
+     */
     @Column(name="organizationId")
-    private Integer organizationId;
+    private String organizationId;
 
     /**
      * 所属上级
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "pid")
     private Integer pid;
@@ -36,7 +41,7 @@ public class Organization implements Serializable {
     /**
      * 组织名称
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "name")
     private String name;
@@ -44,7 +49,7 @@ public class Organization implements Serializable {
     /**
      * 组织描述
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "description")
     private String description;
@@ -68,6 +73,15 @@ public class Organization implements Serializable {
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date ctime;
+
+    /**
+     * 修改时间
+     *
+     */
+    @Column(name="utime")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date utime;
 
     private static final long serialVersionUID = 1L;
 }

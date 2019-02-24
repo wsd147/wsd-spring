@@ -7855,10 +7855,10 @@ ORYX.Core.StencilSet.Rules = {
 	},
 	
 	/**
-	 * Return true if the stencil should be located in the shape menu
+	 * Return true if the stencil should be located in the shape permission
 	 * @param {ORYX.Core.StencilSet.Stencil} morph
 	 * @return {Boolean} Returns true if the morphs in the morph group of the
-	 * specified morph shall be displayed in the shape menu
+	 * specified morph shall be displayed in the shape permission
 	 */
 	showInShapeMenu: function(stencil) {
 		return 	this._stencilSets.any(function(ss){
@@ -10163,7 +10163,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		
 		this.addEventHandlers(this.rootNode.parentNode);
 		
-		//disable context menu
+		//disable context permission
 		this.rootNode.oncontextmenu = function() {return false;};
 	},
 	

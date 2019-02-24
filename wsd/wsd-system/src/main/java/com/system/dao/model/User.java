@@ -18,7 +18,7 @@ public class User implements Serializable{
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @KeySql(useGeneratedKeys = true)
@@ -28,7 +28,7 @@ public class User implements Serializable{
     /**
      * 帐号
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "username")
     private String username;
@@ -36,7 +36,7 @@ public class User implements Serializable{
     /**
      * 密码MD5(密码+盐)
      *
-     * @mbg.generated
+     *
      */
     @Column(name="password")
     private String password;
@@ -44,7 +44,7 @@ public class User implements Serializable{
     /**
      * 盐
      *
-     * @mbg.generated
+     *
      */
     @Column(name="salt")
     private String salt;
@@ -52,7 +52,7 @@ public class User implements Serializable{
     /**
      * 姓名
      *
-     * @mbg.generated
+     *
      */
     @Column(name="realname")
     private String realname;
@@ -60,7 +60,7 @@ public class User implements Serializable{
     /**
      * 头像
      *
-     * @mbg.generated
+     *
      */
     @Column(name="avatar")
     private String avatar;
@@ -68,7 +68,7 @@ public class User implements Serializable{
     /**
      * 电话
      *
-     * @mbg.generated
+     *
      */
     @Column(name="phone")
     private String phone;
@@ -76,7 +76,7 @@ public class User implements Serializable{
     /**
      * 邮箱
      *
-     * @mbg.generated
+     *
      */
     @Column(name="email")
     private String email;
@@ -84,7 +84,7 @@ public class User implements Serializable{
     /**
      * 性别(0:女，1：男)
      *
-     * @mbg.generated
+     *
      */
     @Column(name="sex")
     private Integer sex;
@@ -92,20 +92,28 @@ public class User implements Serializable{
     /**
      * 状态(0:正常,1:锁定)
      *
-     * @mbg.generated
+     *
      */
     @Column(name="locked")
     private Integer locked;
 
     /**
      * 创建时间
+     *R
      *
-     * @mbg.generated
      */
     @Column(name="ctime")
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date ctime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="utime")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date utime;
 
     private static final long serialVersionUID = 1L;
 }

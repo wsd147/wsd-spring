@@ -8,6 +8,7 @@
         this.cols = cols; //设置表头
         this.ltInstance = null; //layui table对象
         this.height = 400;
+        this.width = null;
         this.title = null;
         this.page = true;
     };
@@ -19,6 +20,7 @@
                 elem: "#"+this.elem//指定原始表格元素选择器（推荐id选择器）
                 ,url:this.url
                 ,height: this.height //容器高度
+                ,width:this.width
                 ,cols: this.cols//设置表头
                 ,toolbar: "#"+this.elem+'ToolBar' //开启表格头部工具栏区域
                 ,defaultToolbar:['filter', 'print', 'exports'] //自由配置头部工具栏右侧的图标
@@ -33,8 +35,9 @@
 
             return this;
         },
-        setHeight:function(height){ //设置高度
+        setArea:function(width,height){ //设置高度
             this.height = height;
+            this.width = width;
         },
         setTitle:function(title){ //设置标题
             this.title = title;

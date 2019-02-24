@@ -18,13 +18,13 @@
 							<i class="fa fa-trash" aria-hidden="true"></i>删除
 						</button>
 					</div>
-					<table id="exampleTable" data-mobile-responsive="true">
+					<table id="permissionTable" data-mobile-responsive="true">
 					</table>
 				</div>
 			</div>
 		</div>
 		<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
-		<div>
+		<!--<div>
 			<script type="text/javascript">
 				var s_add_h = 'hidden';
 				var s_edit_h = 'hidden';
@@ -45,10 +45,10 @@
 			<script type="text/javascript">
 				var s_remove_h = '';
 			</script>
-		</div>
+		</div>-->
 	</div>
 	<div th:include="include::footer"></div>
-	<script src="/js/appjs/sys/menu/menu.js"></script>
+	<script th:src="@{/static/js/appjs/sys/permission/permission.js}"></script>
 </body>
 
 </html>

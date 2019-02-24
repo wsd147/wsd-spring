@@ -48,7 +48,7 @@ KISBPM.eventBus = {
     /** Event fired when a model is saved. */
     EVENT_TYPE_MODEL_SAVED: 'event-type-model-saved',
     
-    /** Event fired when the quick menu buttons should be hidden. */
+    /** Event fired when the quick permission buttons should be hidden. */
     EVENT_TYPE_HIDE_SHAPE_BUTTONS: 'event-type-hide-shape-buttons',
 
     /** A mapping for storing the listeners*/

@@ -46,6 +46,7 @@ User.loadTable =function(){
         var defaultColunms = User.initColumn();
         var table = new LAYtable(User.userTableId, User.prefix+"/list/", defaultColunms);
         table.setTitle("用户列表");
+        table.setArea($('#'+User.userTableId).parent().width(),$('#'+User.userTableId).parent().height())
         User.table = table.init(User.tableobjct);
 	});
 }

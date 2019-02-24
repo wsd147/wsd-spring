@@ -220,7 +220,7 @@ if ($.fn.DataTable.TableTools) {
             "disabled": "disabled"
         },
         "collection": {
-            "container": "DTTT_dropdown dropdown-menu",
+            "container": "DTTT_dropdown dropdown-permission",
             "buttons": {
                 "normal": "",
                 "disabled": "disabled"

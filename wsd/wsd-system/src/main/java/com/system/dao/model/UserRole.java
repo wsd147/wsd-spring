@@ -14,7 +14,7 @@ public class UserRole implements Serializable {
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @Column(name ="userRoleId")
@@ -24,7 +24,7 @@ public class UserRole implements Serializable {
     /**
      * 用户编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name ="userId")
     private Integer userId;
@@ -32,7 +32,7 @@ public class UserRole implements Serializable {
     /**
      * 角色编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name ="roleId")
     private Integer roleId;

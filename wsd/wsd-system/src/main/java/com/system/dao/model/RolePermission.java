@@ -15,7 +15,7 @@ public class RolePermission implements Serializable {
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @KeySql(useGeneratedKeys = true)
@@ -25,7 +25,7 @@ public class RolePermission implements Serializable {
     /**
      * 角色编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "roleId")
     private Integer roleId;
@@ -33,7 +33,7 @@ public class RolePermission implements Serializable {
     /**
      * 权限编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "permissionId")
     private Integer permissionId;

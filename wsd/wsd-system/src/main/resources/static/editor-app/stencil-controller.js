@@ -200,7 +200,7 @@ angular.module('activitiModeler')
                 }
                 $scope.containmentRules = containmentRules;
                 
-                // remove quick menu items which are not available anymore due to custom pallette
+                // remove quick permission items which are not available anymore due to custom pallette
                 var availableQuickMenuItems = [];
                 for (var i = 0; i < quickMenuItems.length; i++) 
                 {
@@ -422,7 +422,7 @@ angular.module('activitiModeler')
         			
         			if (morphShapes && morphShapes.length > 0) {
         				// In case the element is not wide enough, start the 2 bottom-buttons more to the left
-        				// to prevent overflow in the right-menu
+        				// to prevent overflow in the right-permission
 	        			var morphButton = document.getElementById('morph-button');
 	        			morphButton.style.display = "block";
 	        			morphButton.style.left = x + 24 +'px';

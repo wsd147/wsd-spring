@@ -1,5 +1,6 @@
 package com.system.controller;
 
+import com.common.controller.BaseController;
 import com.common.dao.model.LayuiTableResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/sys/user")
-public class UserController {
+public class UserController extends BaseController{
 
     private static  final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 

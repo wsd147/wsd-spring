@@ -113,7 +113,7 @@ activitiModeler
                 var canvasSection = jQuery('#canvasSection');
                 canvasSection.scroll(function() {
 
-                    // Hides the resizer and quick menu items during scrolling
+                    // Hides the resizer and quick permission items during scrolling
 
                     var selectedElements = $rootScope.editor.selection;
                     var subSelectionElements = $rootScope.editor._subSelection;
@@ -142,7 +142,7 @@ activitiModeler
 
                 canvasSection.scrollStopped(function(){
 
-                    // Puts the quick menu items and resizer back when scroll is stopped.
+                    // Puts the quick permission items and resizer back when scroll is stopped.
 
                     $rootScope.editor.setSelection([]); // needed cause it checks for element changes and does nothing if the elements are the same
                     $rootScope.editor.setSelection($rootScope.selectedElements, $rootScope.subSelectionElements);

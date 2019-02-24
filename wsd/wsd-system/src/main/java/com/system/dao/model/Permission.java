@@ -1,6 +1,8 @@
 package com.system.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -15,7 +17,7 @@ public class Permission {
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @KeySql(useGeneratedKeys =  true)
@@ -25,7 +27,7 @@ public class Permission {
     /**
      * 所属系统
      *
-     * @mbg.generated
+     *
      */
     @Column(name="systemId")
     private Integer systemId;
@@ -33,7 +35,7 @@ public class Permission {
     /**
      * 所属上级
      *
-     * @mbg.generated
+     *
      */
     @Column(name="pid")
     private Integer pid;
@@ -41,7 +43,7 @@ public class Permission {
     /**
      * 名称
      *
-     * @mbg.generated
+     *
      */
     @Column(name="name")
     private String name;
@@ -49,15 +51,15 @@ public class Permission {
     /**
      * 类型(1:目录,2:菜单,3:按钮)
      *
-     * @mbg.generated
+     *
      */
     @Column(name="type")
-    private Byte type;
+    private Integer type;
 
     /**
      * 权限值
      *
-     * @mbg.generated
+     *
      */
     @Column(name="permissionValue")
     private String permissionValue;
@@ -65,7 +67,7 @@ public class Permission {
     /**
      * 路径
      *
-     * @mbg.generated
+     *
      */
     @Column(name="uri")
     private String uri;
@@ -73,7 +75,7 @@ public class Permission {
     /**
      * 图标
      *
-     * @mbg.generated
+     *
      */
     @Column(name="icon")
     private String icon;
@@ -81,26 +83,35 @@ public class Permission {
     /**
      * 状态(0:禁止,1:正常)
      *
-     * @mbg.generated
+     *
      */
     @Column(name="status")
-    private Byte status;
+    private Integer status;
 
     /**
      * 创建时间
      *
-     * @mbg.generated
+     *
      */
     @Column(name="ctime")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date ctime;
 
     /**
+     * 修改时间
+     */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(name="utime")
+    private Date utime;
+    /**
      * 排序
      *
-     * @mbg.generated
+     *
      */
-    @Column(name="orders")
-    private Long orders;
+    @Column(name="orderNum")
+    private Long orderNum;
 
     private static final long serialVersionUID = 1L;
 }

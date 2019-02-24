@@ -15,7 +15,7 @@ public class UserOrganization implements Serializable{
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @KeySql(useGeneratedKeys =  true)
@@ -25,7 +25,7 @@ public class UserOrganization implements Serializable{
     /**
      * 用户编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "userId")
     private Integer userId;
@@ -33,10 +33,10 @@ public class UserOrganization implements Serializable{
     /**
      * 组织编号
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "organizationId")
-    private Integer organizationId;
+    private String organizationId;
 
     private static final long serialVersionUID = 1L;
 }

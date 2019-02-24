@@ -13,18 +13,7 @@
                                 onclick="Organ.showAdd()">
                             <i class="fa fa-plus hidden" aria-hidden="true"></i>添加
                         </button>
-                        <button shiro:hasPermission="system:sysDept:batchRemove" type="button" class="btn  btn-danger"
-                                onclick="batchRemove()">
-                            <i class="fa fa-trash" aria-hidden="true"></i>删除
-                        </button>
-                    </div>
-                    <div class="columns pull-right">
-                        <button class="btn btn-success" onclick="reLoad()">查询</button>
-                    </div>
 
-                    <div class="columns pull-right col-md-2 nopadding">
-                        <input id="searchName" type="text" class="form-control"
-                               placeholder="">
                     </div>
                 </div>
                 <table id="organizationTableId" data-mobile-responsive="true">

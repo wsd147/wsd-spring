@@ -17,7 +17,7 @@
         this.element = $(element);
 
         //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
+        var DRPTemplate = '<div class="daterangepicker dropdown-permission">' +
             '<div class="calendar left"></div>' +
             '<div class="calendar right"></div>' +
             '<div class="ranges">' +

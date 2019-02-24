@@ -1928,7 +1928,7 @@
 
   var buttonGroup = renderer.create('<div class="note-btn-group btn-group">');
 
-  var dropdown = renderer.create('<div class="dropdown-menu">', function ($node, options) {
+  var dropdown = renderer.create('<div class="dropdown-permission">', function ($node, options) {
     var markup = $.isArray(options.items) ? options.items.map(function (item) {
       var value = (typeof item === 'string') ? item : (item.value || '');
       var content = options.template ? options.template(item) : item;
@@ -1946,7 +1946,7 @@
     return contents + ' ' + icon(options.icons.caret, 'span');
   };
 
-  var dropdownCheck = renderer.create('<div class="dropdown-menu note-check">', function ($node, options) {
+  var dropdownCheck = renderer.create('<div class="dropdown-permission note-check">', function ($node, options) {
     var markup = $.isArray(options.items) ? options.items.map(function (item) {
       var value = (typeof item === 'string') ? item : (item.value || '');
       var content = options.template ? options.template(item) : item;
@@ -7962,7 +7962,7 @@
         'link': 'note-icon-link',
         'unlink': 'note-icon-chain-broken',
         'magic': 'note-icon-magic',
-        'menuCheck': 'note-icon-menu-check',
+        'menuCheck': 'note-icon-permission-check',
         'minus': 'note-icon-minus',
         'orderedlist': 'note-icon-orderedlist',
         'pencil': 'note-icon-pencil',

@@ -669,7 +669,7 @@ div.ui-jqgrid .selected-row td {
 	-moz-text-overflow:ellipsis;
 	text-overflow:ellipsis;
 }
-/* Toolbar Search Menu. Nav menu */
+/* Toolbar Search Menu. Nav permission */
 .ui-search-menu,
 .ui-nav-menu {
 	position: absolute;

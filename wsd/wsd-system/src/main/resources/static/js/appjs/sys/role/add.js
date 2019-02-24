@@ -24,7 +24,7 @@ function getAllSelectNodes() {
 function getMenuTreeData() {
 	$.ajax({
 		type : "GET",
-		url : "/sys/menu/tree",
+		url : "/sys/permission/tree",
 		success : function(menuTree) {
 			loadMenuTree(menuTree);
 		}

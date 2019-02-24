@@ -18,4 +18,11 @@ var Alert ={
     success:function(content){
         Alert.msg(content,6);
     },
+    comfirm:function(content,action){
+        layer.confirm(content, {icon: 3, title:'提示'}, function(index){
+            //do something
+            action
+            layer.close(index);
+        });
+    }
 }

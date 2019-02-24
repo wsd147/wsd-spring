@@ -16,7 +16,7 @@ public class Role implements Serializable{
     /**
      * 编号
      *
-     * @mbg.generated
+     *
      */
     @Id
     @KeySql(useGeneratedKeys = true)
@@ -26,7 +26,7 @@ public class Role implements Serializable{
     /**
      * 角色名称
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "name")
     private String name;
@@ -34,7 +34,7 @@ public class Role implements Serializable{
     /**
      * 角色标题
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "title")
     private String title;
@@ -42,7 +42,7 @@ public class Role implements Serializable{
     /**
      * 角色描述
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "description")
     private String description;
@@ -50,7 +50,7 @@ public class Role implements Serializable{
     /**
      * 创建时间
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "ctime")
     private Date ctime;
@@ -58,7 +58,7 @@ public class Role implements Serializable{
     /**
      * 排序
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "orders")
     private Long orders;

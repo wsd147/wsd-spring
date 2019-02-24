@@ -15,7 +15,6 @@ public class OperationLog implements Serializable{
     /**
      * 编号
      *
-     * @mbg.generated
      */
     @Id
     @KeySql(useGeneratedKeys = true)
@@ -25,7 +24,7 @@ public class OperationLog implements Serializable{
     /**
      * 操作描述
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "description")
     private String description;
@@ -33,7 +32,7 @@ public class OperationLog implements Serializable{
     /**
      * 操作用户
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "username")
     private String username;
@@ -41,7 +40,7 @@ public class OperationLog implements Serializable{
     /**
      * 操作时间
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "startTime")
     private Date startTime;
@@ -49,7 +48,7 @@ public class OperationLog implements Serializable{
     /**
      * 消耗时间
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "spendTime")
     private Integer spendTime;
@@ -57,7 +56,7 @@ public class OperationLog implements Serializable{
     /**
      * 根路径
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "basePath")
     private String basePath;
@@ -65,7 +64,7 @@ public class OperationLog implements Serializable{
     /**
      * URI
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "uri")
     private String uri;
@@ -73,7 +72,7 @@ public class OperationLog implements Serializable{
     /**
      * URL
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "url")
     private String url;
@@ -81,7 +80,7 @@ public class OperationLog implements Serializable{
     /**
      * 请求类型
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "method")
     private String method;
@@ -89,7 +88,7 @@ public class OperationLog implements Serializable{
     /**
      * 用户标识
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "userAgent")
     private String userAgent;
@@ -97,7 +96,7 @@ public class OperationLog implements Serializable{
     /**
      * IP地址
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "ip")
     private String ip;
@@ -105,7 +104,7 @@ public class OperationLog implements Serializable{
     /**
      * 权限值
      *
-     * @mbg.generated
+     *
      */
     @Column(name = "permissions")
     private String permissions;

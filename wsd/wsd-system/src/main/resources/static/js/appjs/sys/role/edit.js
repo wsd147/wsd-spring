@@ -36,7 +36,7 @@ function getMenuTreeData() {
 	var roleId = $('#roleId').val();
 	$.ajax({
 		type : "GET",
-		url : "/sys/menu/tree/" + roleId,
+		url : "/sys/permission/tree/" + roleId,
 		success : function(data) {
 			loadMenuTree(data);
 		}

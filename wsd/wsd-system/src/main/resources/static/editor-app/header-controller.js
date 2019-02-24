@@ -24,8 +24,8 @@ angular.module('activitiModeler')
     	// Add reference to global header-config
     	$scope.headerConfig = KISBPM.HEADER_CONFIG;
     	
-    	// TODO: generate setting-menu items
+    	// TODO: generate setting-permission items
     	
-    	// TODO: generate user-menu items
+    	// TODO: generate user-permission items
 
 }]);
