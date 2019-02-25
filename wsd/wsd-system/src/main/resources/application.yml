@@ -5,7 +5,7 @@ spring:
           name: wsd
           url: jdbc:mysql://127.0.0.1:3306/wsd?autoReconnect=true&useSSL=false
           username: root
-          password: wsd123
+          password: root
           driver-class-name: com.mysql.jdbc.Driver
           # 使用druid数据源
           type: com.alibaba.druid.pool.DruidDataSource

@@ -21,7 +21,7 @@ public class UserController extends BaseController{
 
     private static  final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private String prefix = "system/user";
+    private final String prefix = "system/user";
 
     @Autowired
     UserService userService;
@@ -43,6 +43,7 @@ public class UserController extends BaseController{
             layuiTableResult  = new LayuiTableResult<User>(0,null,PageInfo.getTotal(),PageInfo.getList());
         }catch (Exception e){
             LOGGER.error("用户列表加载失败:+"+e.getMessage());
+            e.printStackTrace();
             layuiTableResult = new LayuiTableResult<User>(0,"加载失败",null,null);
         }
         return layuiTableResult;

@@ -1,6 +1,8 @@
 package com.system.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.Column;
@@ -53,15 +55,26 @@ public class Role implements Serializable{
      *
      */
     @Column(name = "ctime")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date ctime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name = "utime")
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date utime;
+
 
     /**
      * 排序
      *
      *
      */
-    @Column(name = "orders")
-    private Long orders;
+    @Column(name = "orderNum")
+    private Long orderNum;
 
     private static final long serialVersionUID = 1L;
 }

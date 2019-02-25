@@ -23,7 +23,7 @@ import java.util.List;
 public class PermissionController extends BaseController{
 
     private static  final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
-    private String prefix = "system/permission";
+    private final  String prefix = "system/permission";
 
     @Autowired
     PermissionService permissionService;

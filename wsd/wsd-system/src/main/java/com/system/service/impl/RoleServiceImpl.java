@@ -20,4 +20,14 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     protected BaseDao<Role> getMapper() {
         return roleMapper;
     }
+
+    @Override
+    public Integer removeBatch(Long[] ids) throws Exception{
+        int count = 0;
+        for (long id:ids){
+            int num = roleMapper.deleteByPrimaryKey(new Long(id).intValue());
+            count += num;
+        }
+        return count;
+    }
 }

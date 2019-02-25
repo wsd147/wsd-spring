@@ -150,7 +150,6 @@ Permission.showEdit = function(id){
 }
 
 Permission.removeOne = function(id){
-    alert(id)
     layer.confirm("确定删除该权限吗？", {icon: 3, title:'提示'}, function(index){
         //do something
         var ajx = new $ax(Permission.prefix+"/remove/"+id,function (data) {
