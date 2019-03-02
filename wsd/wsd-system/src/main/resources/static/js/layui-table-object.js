@@ -7,7 +7,7 @@
         this.url = url;
         this.cols = cols; //设置表头
         this.ltInstance = null; //layui table对象
-        this.height = 400;
+        this.height = "full-60"
         this.width = null;
         this.title = null;
         this.page = true;
@@ -37,6 +37,9 @@
         },
         setArea:function(width,height){ //设置高度
             this.height = height;
+            this.width = width;
+        },
+        setWidth:function(width){ //设置宽
             this.width = width;
         },
         setTitle:function(title){ //设置标题

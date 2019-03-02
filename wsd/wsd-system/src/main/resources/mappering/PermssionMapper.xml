@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.mapper.PermissionMapper">
+
+    <select id="selectPermissionTree" parameterType="java.lang.Integer" resultType="com.common.dao.model.ZtreeResult">
+         SELECT TP.PERMISSIONID ID,TP.NAME NAME,TP.PID PID,
+        CASE
+        WHEN TP2.ID IS NOT NULL THEN 'TRUE'
+        WHEN TP2.ID IS NULL THEN 'FALSE'
+        END CHECKED,
+        CASE
+        WHEN TP.PID IS NULL
+        THEN  'TRUE'
+        WHEN TP.PID IS NOT NULL
+        THEN  'FASLE'
+        END OPEN
+        FROM T_PERMISSION TP
+        LEFT JOIN(
+        SELECT TP.PERMISSIONID ID,TP.NAME NAME,TP.PID PID
+        FROM T_ROLE_PERMISSION TRP
+        LEFT JOIN  T_PERMISSION TP
+        ON TRP.PERMISSIONID = TP.PERMISSIONID
+        WHERE TRP.ROLEID = #{ROLEID}) TP2
+        ON TP.PERMISSIONID = TP2.ID WHERE TP.`STATUS` = 1
+    </select>
+
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.system.dao.model.Permission">
+        SELECT TP.*
+        FROM
+        T_USER_ROLE TUR,
+        T_ROLE_PERMISSION TRP,
+        T_PERMISSION TP
+        WHERE
+        TUR.ROLEID = TRP.ROLEID
+        AND TRP.PERMISSIONID = TP.PERMISSIONID
+        AND TUR.USERID = #{id}
+        AND TP.TYPE != 2
+    </select>
+</mapper>

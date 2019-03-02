@@ -36,7 +36,7 @@ public class UserOrganization implements Serializable{
      *
      */
     @Column(name = "organizationId")
-    private String organizationId;
+    private Integer organizationId;
 
     private static final long serialVersionUID = 1L;
 }

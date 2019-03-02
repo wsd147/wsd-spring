@@ -50,6 +50,12 @@ public class Role implements Serializable{
     private String description;
 
     /**
+     * 是否授权
+     */
+    @Column(name = "status")
+    private Integer status;
+
+    /**
      * 创建时间
      *
      *

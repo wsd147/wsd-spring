@@ -1,12 +1,15 @@
 package com.system.controller;
 
 import com.common.dao.model.LayuiTableResult;
+import com.common.dao.model.ZtreeResult;
 import com.common.tips.ErrorTip;
 import com.common.tips.SuccessTip;
 import com.common.tips.Tip;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.system.dao.model.Permission;
 import com.system.dao.model.Role;
+import com.system.service.PermissionService;
 import com.system.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +33,9 @@ public class RoleController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    PermissionService permissionService;
 
     @RequestMapping("/role")
     public ModelAndView role(){
@@ -55,7 +62,7 @@ public class RoleController {
 
     @RequestMapping("/add")
     public  ModelAndView add(){
-        return  new ModelAndView(prefix+"add");
+        return  new ModelAndView(prefix+"/add");
     }
 
     @RequestMapping("/edit/{id}")
@@ -85,11 +92,12 @@ public class RoleController {
                     return new ErrorTip(500,"添加失败！该角色已经存在");
                 }else{
                     role.setCtime(new Date());
+                    role.setStatus(0);
                     roleService.insert(role);
                     return new SuccessTip();
                 }
             }else{
-                if(roleService.deleteByKey(role.getRoleId())==null){
+                if(roleService.selectByKey(role.getRoleId())==null){
                     return  new ErrorTip(500,"修改失败，该角色不存在，请刷新");
                 }else{
                     role.setUtime(new Date());
@@ -111,7 +119,7 @@ public class RoleController {
             if(roleService.selectByKey(id)==null){
                 return new ErrorTip(500,"删除失败，该角色已经不存在，请刷新");
             }else{
-                roleService.deleteByKey(id);
+                roleService.removeOne(id);
                 return  new SuccessTip();
             }
         }catch (Exception e){
@@ -121,14 +129,38 @@ public class RoleController {
         }
     }
 
-    @DeleteMapping("/removeBatch/{ids}")
+    @PostMapping("/removeBatch")
     @ResponseBody
-    public  Tip removeBatch(@PathVariable("ids") Long [] ids){
+    public  Tip removeBatch(@RequestParam("ids[]") Integer [] ids){
         try{
             roleService.removeBatch(ids);
             return new SuccessTip();
         }catch (Exception e){
             LOGGER.error("删除角色失败："+e.getMessage());
+            e.printStackTrace();
+            return new ErrorTip(500,"程序错误");
+        }
+    }
+
+    @GetMapping("/getPermiTree/{roleId}")
+    @ResponseBody
+    public List<ZtreeResult> getAllPermiTree(@PathVariable("roleId")Integer roleId){
+        try{
+            return permissionService.selectPermissionTree(roleId);
+        }catch (Exception e){
+            LOGGER.error("打开授权页面失败："+e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/saveAuth")
+    @ResponseBody
+    public Tip saveAuth(@RequestParam("roleId")Integer roleId ,@RequestParam("ids[]")Integer [] ids){
+        try{
+            return roleService.saveAuth(roleId,ids);
+        }catch (Exception e){
+            LOGGER.error("授权失败："+e.getMessage());
             e.printStackTrace();
             return new ErrorTip(500,"程序错误");
         }

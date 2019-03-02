@@ -2,7 +2,9 @@ var Role = {
 	roleTableId:'roleTable',
 	prefix:"/sys/role",
     tableobjct: null,
-    table:null
+    table:null,
+    authTree:null,
+    width:null
 }
 
 //初始化表格列
@@ -12,9 +14,24 @@ Role.initColumn = function(){
         {title: '角色名称', field: 'name', align: 'center'},
         {title: '角色标题', field: 'title', align: 'center'},
         {title: '角色描述', field: 'description', align: 'center'},
+        {title: '状态', field: 'status', align: 'center',templet:function(item){
+            var s = null;
+            if(item.status==0){
+                s = "<span class='layui-badge layui-bg-red'>未授权</span>";
+            }else if(item.status==1){
+                s = "<span class='layui-badge layui-bg-green'>已授权</span>"
+
+            }
+            return s;
+        }},
         {title: '创建时间', field: 'ctime', align: 'center'},
         {title: '修改时间', field: 'utime', align: 'center'},
         {title: '操作', field: 'roleId', align: 'center', templet:function(item){
+            var a = '<a class="btn btn-primary btn-sm '
+                /* + s_edit_h*/
+                + '" href="#" mce_href="#" title="授权" onclick="Role.showAuth(\''
+                + item.roleId
+                + '\')"><i class="fa fa-sitemap"></i></a> ';
             var e = '<a class="btn btn-primary btn-sm '
                 /* + s_edit_h*/
                 + '" href="#" mce_href="#" title="编辑" onclick="Role.showEdit(\''
@@ -25,7 +42,7 @@ Role.initColumn = function(){
                 + '" href="#" title="删除"  mce_href="#" onclick="Role.removeOne(\''
                 + item.roleId
                 + '\')"><i class="fa fa-remove"></i></a> ';
-            return e + d ;
+            return a+e + d ;
         }}
     ]];
     return columns;
@@ -38,15 +55,71 @@ Role.loadTable =function(){
         var defaultColunms = Role.initColumn();
         var table = new LAYtable(Role.roleTableId, Role.prefix+"/list/", defaultColunms);
         table.setTitle("角色列表");
-        table.setArea($('#'+Role.userTableId).parent().width(),$('#'+Role.userTableId).parent().height())
         Role.table = table.init(Role.tableobjct);
     });
 }
 
 Role.reload = function(){
     var queryData = {};
-    // queryData['username'] = $("#searchName").val()==''?null:$("#searchName").val();
     Role.table.refresh(queryData);
+}
+
+Role.showAuth =function(id){
+    Role.loadTree(id);
+    layer.open({
+        type : 1,
+        title : '授权',
+        maxmin : true,
+        shadeClose : false, // 点击遮罩关闭层
+        area : [ Role.width, '520px' ],
+        content : $("#authTree"),
+        btn: ['保存', '关闭'],
+        yes: function(index, layero){
+            Role.saveAuth(id);
+            Role.loadTable();
+            layer.close(index);
+        }
+        ,btn2: function(index, layero){
+            layer.close(index);
+        }
+    });
+    $("#authTree").show()
+}
+
+Role.loadTree=function(id){
+    var setting = {
+        check: {
+            enable: true,
+            chkboxType: { "Y": "ps", "N": "ps" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        }
+    };
+    this.authTree = new $ZTree("tree", Role.prefix+"/getPermiTree/"+id);
+    this.authTree.setSettings(setting);
+    this.authTree.init();
+    this.authTree.expendAll();
+}
+
+Role.saveAuth=function (roleId) {
+   var ids  = this.authTree.getCheckedIds();
+    var ajx = new $ax(Role.prefix+"/saveAuth",function (data) {
+        if(data.code == 200){
+            Alert.ok(data.message);
+            Role.loadTable();
+        }else {
+            Alert.error(data.message);
+        }
+    },function () {
+        Alert.error("网络错误")
+    });
+    ajx.setType("post")
+    ajx.set("roleId",roleId);
+    ajx.set("ids",ids);
+    ajx.start();
 }
 
 Role.showAdd=function(){
@@ -55,8 +128,8 @@ Role.showAdd=function(){
         title : '添加角色',
         maxmin : true,
         shadeClose : false, // 点击遮罩关闭层
-        area : [ '800px', '520px' ],
-        content : prefix + '/add' // iframe的url
+        area : [ Role.width, '500px' ],
+        content : Role.prefix + '/add' // iframe的url
     });
 }
 
@@ -66,13 +139,13 @@ Role.showEdit=function(id){
             title : '角色修改',
             maxmin : true,
             shadeClose : true, // 点击遮罩关闭层
-            area : [ '800px', '520px' ],
+            area : [ Role.width, '520px' ],
             content : prefix + '/edit/' + id // iframe的url
         });
 }
 
 Role.removeOne=function(id){
-    layer.confirm("确定删除该权限吗？", {icon: 3, title:'提示'}, function(index){
+    layer.confirm("确定删除该角色吗？", {icon: 3, title:'提示'}, function(index){
         //do something
         var ajx = new $ax(Role.prefix+"/removeOne/"+id,function (data) {
             if(data.code == 200){
@@ -89,72 +162,35 @@ Role.removeOne=function(id){
         layer.close(index);
     });
 }
-var prefix = "/sys/role";
+
+Role.batchRemove = function(){
+   var checkStatus = Role.tableobjct.checkStatus(Role.roleTableId);
+   if(checkStatus.data.length==0){
+       Alert.warn("至少选择一行数据");
+   }else{
+       layer.confirm("确定删除选中角色吗？", {icon: 3, title:'提示'}, function(index){
+           var ids = [];
+           $.each(checkStatus.data,function (index,item) {
+               ids.push(item.roleId);
+           })
+           var ajx = new $ax(Role.prefix+"/removeBatch",function (data) {
+               if(data.code == 200){
+                   Alert.ok(data.message);
+                   Role.loadTable();
+               }else {
+                   Alert.error(data.message);
+               }
+           },function () {
+               Alert.error("网络错误");
+           });
+           ajx.set("ids",ids);
+           ajx.setType("post");
+           ajx.start();
+           layer.close(index);
+       });
+   }
+}
 $(function() {
+    Role.width = $('#'+Role.roleTableId).parent().width()+'px';
     Role.loadTable();
 });
-
-function remove(id) {
-	layer.confirm('确定要删除选中的记录？', {
-		btn : [ '确定', '取消' ]
-	}, function() {
-		$.ajax({
-			url : prefix + "/remove",
-			type : "post",
-			data : {
-				'id' : id
-			},
-			success : function(r) {
-				if (r.code === 0) {
-					layer.msg("删除成功");
-					reLoad();
-				} else {
-					layer.msg(r.msg);
-				}
-			}
-		});
-	})
-
-}
-function edit(id) {
-	layer.open({
-		type : 2,
-		title : '角色修改',
-		maxmin : true,
-		shadeClose : true, // 点击遮罩关闭层
-		area : [ '800px', '520px' ],
-		content : prefix + '/edit/' + id // iframe的url
-	});
-}
-function batchRemove() {
-	
-	var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
-	if (rows.length == 0) {
-		layer.msg("请选择要删除的数据");
-		return;
-	}
-	layer.confirm("确认要删除选中的'" + rows.length + "'条数据吗?", {
-		btn : [ '确定', '取消' ]
-	}, function() {
-		var ids = new Array();
-		$.each(rows, function(i, row) {
-			ids[i] = row['roleId'];
-		});
-		console.log(ids);
-		$.ajax({
-			type : 'POST',
-			data : {
-				"ids" : ids
-			},
-			url : prefix + '/batchRemove',
-			success : function(r) {
-				if (r.code == 0) {
-					layer.msg(r.msg);
-					reLoad();
-				} else {
-					layer.msg(r.msg);
-				}
-			}
-		});
-	}, function() {});
-}

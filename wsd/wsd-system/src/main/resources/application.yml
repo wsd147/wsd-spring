@@ -1,5 +1,11 @@
 server:
-    port: 8080
+    port: 8081
+    session:
+      timeout: 300000
+
+mybatis:
+  mapperLocations: classpath:mappering/*.xml
+
 spring:
     datasource:
           name: wsd
@@ -24,7 +30,6 @@ spring:
           filters: stat,wall,log4j
           connectionProperties=druid.stat.mergeSql: true;druid.stat.slowSqlMillis=5000
           useGlobalDataSourceStat: true
-
     thymeleaf:
       prefix: classpath:/templates/
       suffix: .html
@@ -32,6 +37,19 @@ spring:
       mode: LEGACYHTML5
     mvc:
       static-path-pattern: /static/**
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 10000
+      pool:
+        max-active: 100
+        max-idle: 10
+        min-idle: 8
+        max-wait: -1
+    cache:
+      type: redis
+
+
 #pagehelper分页插件
 pagehelper:
     helperDialect: mysql

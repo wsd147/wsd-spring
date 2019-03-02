@@ -2,30 +2,32 @@ var User = {
     userTableId:'userTable',
     tableobjct: null,
 	table:null,
-    prefix :"/sys/user"
+    prefix :"/sys/user",
+	treeOnclickId:null,
+    width:null
 };
 
 //初始化表格列
 User.initColumn = function(){
     var columns = [[
         {field: 'selectItem', checkbox: true},
-        {title: '帐号', field: 'username', align: 'center'},
+        {title: '帐号', field: 'username', align: 'center',width:'10%'},
         {title: '姓名', field: 'realname', align: 'center'},
         {title: '头像', field: 'avatar', align: 'center', templet:function(d){
             return "<img src="+d.avatar+" width='64' height='64'/>";
 		}},
         {title: '电话', field: 'phone', align: 'center'},
         {title: '邮箱', field: 'email', align: 'center'},
-        {title: '性别', field: 'sex', align: 'center', templet:function(d){
+        {title: '性别', field: 'sex', align: 'center',width:'6%', templet:function(d){
+        	var s = null
            if(d.sex==0){
-           		return "<span class='layui-badge layui-bg-red'>女</span>";
+           		s = "<span class='layui-badge layui-bg-red'>女</span>";
 		   }else if(d.sex == 1){
-               return "<span class='layui-badge layui-bg-blue'>男</span>"
-		   }else{
-		   		return null;
+               s = "<span class='layui-badge layui-bg-blue'>男</span>"
 		   }
+		   return s;
 		}},
-        {title: '是否锁定', field: 'locked', align: 'center', templet:function(d){
+        {title: '状态', field: 'locked', align: 'center',width:'6%', templet:function(d){
             if(d.locked==0){
                 return "<span class='layui-badge layui-bg-red'><i class='fa fa-lock'></i></span>";
             }else if(d.locked == 1){
@@ -46,15 +48,31 @@ User.loadTable =function(){
         var defaultColunms = User.initColumn();
         var table = new LAYtable(User.userTableId, User.prefix+"/list/", defaultColunms);
         table.setTitle("用户列表");
-        table.setArea($('#'+User.userTableId).parent().width(),$('#'+User.userTableId).parent().height())
         User.table = table.init(User.tableobjct);
 	});
 }
 
-User.reload = function(){
+User.reloadTable = function(){
     var queryData = {};
-    queryData['username'] = $("#searchName").val()==''?null:$("#searchName").val();
+    queryData['username'] = $("#searchName").val().trim()==''?undefined:$("#searchName").val();
+    queryData['orgnId'] = User.orgnId;
     User.table.refresh(queryData);
+}
+
+User.loadOrginTree = function(elem,onclickFun){
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback : {
+            onClick : onclickFun
+        }
+    };
+    var origanTree = new $ZTree(elem, User.prefix+"/getOrignTree");
+    origanTree.setSettings(setting);
+    origanTree.init();
 }
 
 //检查是否选中列
@@ -69,8 +87,8 @@ User.openAdd = function () {
         title : '增加用户',
         maxmin : true,
         shadeClose : false, // 点击遮罩关闭层
-        area : [ '800px', '520px' ],
-        content : prefix + '/add'
+        area : [ User.width, '500px' ],
+        content : User.prefix + '/add'
     });
 }
 
@@ -81,8 +99,8 @@ User.openEdit = function () {
         title : '用户修改',
         maxmin : true,
         shadeClose : false,
-        area : [ '800px', '520px' ],
-        content : prefix + '/edit/' + id // iframe的url
+        area : [ User.width, '500px' ],
+        content : User.prefix + '/edit/' + id // iframe的url
     });
 }
 
@@ -92,26 +110,32 @@ User.save = function () {
 }
 
 //删除用户
-User.delete = function () {
-    layer.confirm('确定要删除选中的记录？', {
-        btn : [ '确定', '取消' ]
-    }, function() {
-        $.ajax({
-            url : "/sys/user/remove",
-            type : "post",
-            data : {
-                'id' : id
-            },
-            success : function(r) {
-                if (r.code == 0) {
-                    layer.msg(r.msg);
-                    reLoad();
-                } else {
-                    layer.msg(r.msg);
+User.batchRemove = function () {
+    var checkStatus = User.tableobjct.checkStatus(User.userTableId);
+    if(checkStatus.data.length==0){
+        Alert.warn("至少选择一行数据");
+    }else{
+        layer.confirm("确定删除选中用户吗？", {icon: 3, title:'提示'}, function(index){
+            var ids = [];
+            $.each(checkStatus.data,function (index,item) {
+                ids.push(item.userId);
+            })
+            var ajx = new $ax(User.prefix+"/removeBatch",function (data) {
+                if(data.code == 200){
+                    Alert.ok(data.message);
+                    Role.loadTable();
+                }else {
+                    Alert.error(data.message);
                 }
-            }
+            },function () {
+                Alert.error("网络错误");
+            });
+            ajx.set("ids",ids);
+            ajx.setType("post");
+            ajx.start();
+            layer.close(index);
         });
-    })
+    }
 }
 
 //禁用/启用账户
@@ -119,14 +143,14 @@ User.disableAndEnable =function () {
 	
 }
 $(function(){
+    User.width = $('#'+User.userTableId).parent().width()+'px';
 	User.loadTable();
+    User.loadOrginTree("organTree",function (event, treeId, treeNode) {
+      	User.orgnId = treeNode.id;
+      	User.reloadTable()
+    });
 });
-var prefix = "/sys/user"
-// $(function() {
-// 	var deptId = '';
-// 	getTreeData();
-// 	load(deptId);
-// });
+
 
 function load(deptId) {
 	$('#exampleTable')

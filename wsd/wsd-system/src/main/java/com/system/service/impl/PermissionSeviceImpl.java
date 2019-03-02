@@ -1,10 +1,13 @@
 package com.system.service.impl;
 
 import com.common.dao.BaseDao;
+import com.common.dao.model.Menu;
+import com.common.dao.model.ZtreeResult;
 import com.common.service.BaseServiceImpl;
 import com.common.tips.ErrorTip;
 import com.common.tips.SuccessTip;
 import com.common.tips.Tip;
+import com.common.util.BuildMeun;
 import com.system.dao.mapper.PermissionMapper;
 import com.system.dao.model.Permission;
 import com.system.service.PermissionService;
@@ -13,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -71,5 +73,45 @@ public class PermissionSeviceImpl extends BaseServiceImpl<Permission> implements
             }
         }
         return  null;
+    }
+
+    @Override
+    public List<ZtreeResult> selectPermissionTree(Integer roleId) {
+        return permissionMapper.selectPermissionTree(roleId);
+    }
+
+    @Override
+    public List<Menu<Permission>> listMenuTree(Integer id) {
+        List<Menu<Permission>> menus = new ArrayList<Menu<Permission>>();
+
+        List<Permission> permissions = permissionMapper.selectByUserId(id);
+
+        for (Permission permission : permissions) {
+
+            Menu<Permission> menu = new Menu<Permission>();
+
+            menu.setId(permission.getPermissionId().toString());
+
+            menu.setParentId(permission.getPid().toString());
+
+            menu.setText(permission.getName());
+
+            Map<String, Object> attributes = new HashMap<>(16);
+
+            attributes.put("url", permission.getUri());
+
+            attributes.put("icon", permission.getIcon());
+
+            menu.setAttributes(attributes);
+
+            menus.add(menu);
+
+        }
+
+        // 默认顶级菜单为０，根据数据库实际情况调整
+
+        List<Menu<Permission>> list = BuildMeun.buildList(menus, "0");
+
+        return list;
     }
 }

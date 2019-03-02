@@ -48,8 +48,7 @@
 				zNodeSeting = this.initSetting();
 			}
 			var zNodes = this.loadNodes();
-			$.fn.zTree.init($("#" + this.id), zNodeSeting, zNodes);
-			var zTree = $.fn.zTree.getZTreeObj(this.id);
+			return $.fn.zTree.init($("#" + this.id), zNodeSeting, zNodes);
 		},
 
 		/**
@@ -71,10 +70,10 @@
 		 */
 		loadNodes : function() {
 			var zNodes = null;
-			var ajax = new $ax(Feng.ctxPath + this.url, function(data) {
+			var ajax = new $ax(this.url, function(data) {
 				zNodes = data;
 			}, function(data) {
-				Feng.error("加载ztree信息失败!");
+				Alert.error("加载ztree信息失败!");
 			});
 			ajax.setType("get");
 			ajax.start();
@@ -97,6 +96,22 @@
             var zTree = $.fn.zTree.getZTreeObj(this.id);
             var nodes = zTree.getSelectedNodes();
             return nodes[0].id;
+        },
+        /**
+		 * 获取勾选的id
+         */
+        getCheckedIds:function () {
+            var zTree = $.fn.zTree.getZTreeObj(this.id);
+            var nodes = zTree.getCheckedNodes(true);
+            var ids = [];
+            $.each(nodes,function (index,item) {
+				ids.push(item.id)
+            })
+			return ids;
+        },
+		expendAll: function () {
+            var zTree = $.fn.zTree.getZTreeObj(this.id);
+			zTree.expandAll(true);
         }
 
 	};
