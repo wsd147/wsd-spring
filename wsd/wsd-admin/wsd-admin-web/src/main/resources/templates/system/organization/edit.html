@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="id" name="id" th:value="${organization.id}"
+								class="hidden">
+							<div class="form-group">
+								<label class="col-sm-3 control-label ">上级组织：</label>
+								<div class="col-sm-8">
+								<input th:value="${parentName}"
+										class="form-control" type="text" readonly="true" />
+									<input class="form-control hidden" type="text" id="pid" name="pid" th:value="${organization.pid}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">组织编码：</label>
+								<div class="col-sm-8">
+									<input id="organizationId" name="organizationId" th:value="${organization.organizationId}"
+										   class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">组织名称：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${organization.name}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">组织描述：</label>
+								<div class="col-sm-8">
+									<textarea id="description" name="description" th:value="${organization.description}" class="form-control" type="text" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="orderNum" name="orderNum" th:value="${organization.orderNum}"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary" onclick="Organ_Update.save()">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" th:src="@{/static/js/appjs/sys/organization/update.js}"></script>
+</body>
+</html>

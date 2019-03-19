@@ -1,0 +1,49 @@
+server:
+    port: 8081
+    session:
+      timeout: 300000
+
+mybatis:
+  mapperLocations: classpath:mappering/*.xml
+
+spring:
+    datasource:
+          name: wsd
+          url: jdbc:mysql://127.0.0.1:3306/wsd?autoReconnect=true&useSSL=false
+          username: root
+          password: root
+          driver-class-name: com.mysql.jdbc.Driver
+          # 使用druid数据源
+          type: com.alibaba.druid.pool.DruidDataSource
+          initialSize: 5
+          minIdle: 5
+          maxActive: 20
+          maxWait: 60000
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: SELECT 1 FROM DUAL
+          testWhileIdle: true
+          testOnBorrow: false
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxPoolPreparedStatementPerConnectionSize: 20
+          filters: stat,wall,log4j
+          connectionProperties=druid.stat.mergeSql: true;druid.stat.slowSqlMillis=5000
+          useGlobalDataSourceStat: true
+    thymeleaf:
+          prefix: classpath:/templates/
+          suffix: .html
+          cache: false
+          mode: LEGACYHTML5
+    mvc:
+      static-path-pattern: /static/**
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    count: countSql
+
+logging:
+  level:
+    com.wsd.admin.dao: debug

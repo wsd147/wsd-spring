@@ -1,5 +1,10 @@
-D:\idea-project\wsd\wsd-common\src\main\java\com\common\dao\BaseDao.java
-D:\idea-project\wsd\wsd-common\src\main\java\com\common\dao\model\LayuiTableResult.java
-D:\idea-project\wsd\wsd-common\src\main\java\com\common\service\BaseService.java
-D:\idea-project\wsd\wsd-common\src\main\java\com\common\service\BaseServiceImpl.java
-D:\idea-project\wsd\wsd-common\src\main\java\com\common\controller\BaseController.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\tips\SuccessTip.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\util\BuildMeun.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\model\Menu.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\model\LayuiTableResult.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\model\ZtreeResult.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\dao\BaseDao.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\constant\SysConstant.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\controller\BaseController.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\tips\Tip.java
+D:\idea-project\wsd-spring\wsd\wsd-common\src\main\java\com\common\tips\ErrorTip.java

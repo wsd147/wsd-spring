@@ -1,6 +1,6 @@
 package com.common.util;
 
-import com.common.dao.model.Menu;
+import com.common.model.Menu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
